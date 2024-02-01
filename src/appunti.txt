@@ -1,0 +1,373 @@
+COMANDI:
+npx create-react-app nome-della-tua-app= creazione nuova app (nel nome personalizzato dell'app no spazi)
+npm run dev = comando per avviare app. Se non funziona rifare "npm i"
+STRUTTURA:
+es lint = riguarda le regole di scrittura codice.
+gitignore= file dove finiscono i file da far ignorare da git per non essere magari pubblicati
+dependencies= pacchetti fondamentali perchè il progetto parta.
+devDependencies=strumenti non fondamentali, ma facoltativi che servono a noi.
+id "root" = la radice di tutto.
+COMPONENTI:
+ricordarsi di importare componenti e sottocomponenti.
+creazione di un componente, basta creare il file.jsx ed eventualmente il file.css. Va scritto come una funzione:
+
+----------------------
+esempio:
+
+import "./Navbar.css";
+import Link from "./link";
+
+function Navbar(){
+    return(
+
+        <ul>
+            <li><Link>qwerty</Link></li>
+            <li><Link>contatti</Link></li>
+            <li><Link>about</Link></li>
+            <li><Link>sop</Link></li>
+            <li><Link>iscrivetevi al canale</Link></li>
+      
+        </ul>
+
+    );
+}
+
+export default Navbar;
+--------------------------------
+Si possono creare dei componenti contenuti in altri componenti.
+Il return deve essere un unico elemento, quindi possiamo usare i frammenti d'entrata < ></> per simulare un elemento unico.
+E' fondamentale che tutti i tag abbiano una chiusura anche se su html non ce l'hanno, esempio un immagine sarà:
+<img src="" alt"" />
+className=lista di classi che possiamo dare ad un elemento ( come il class per il css)
+avendo nelle funzioni dei componenti del puro javascript, possiamo usarlo per mandare a schermo cosa vogliamo, anche con interpolazioni.
+Doppie graffe {{xxxx}} sono per descrivere un oggetto, es <img style={{height:"200px"}} src={`/${img}.svg`} alt="" />
+
+CSS:
+Style component, per personalizzare con css dei componenti, approfondire più avanti
+possibilità di dare classi dinamiche es:
+
+const x=11;
+
+<div className={`box rounded ${x < 10? "rotated" : ""}`}>x è {x}</div>
+
+.box{
+  height:300px;
+  width:300px;
+  background-color:red ;  
+}
+
+.rounded{
+    border-radius: 30px;
+}
+
+.rotated{
+    rotate:30deg;
+    background-color: orange;
+}
+
+\\\\\\\PROPS:
+sono letteralmente delle proprietà attribuibili ai tag, es:
+
+    /HTML/
+    <div>
+      <Card title="Tokyo" imgURL="https://images.unsplash.com/photo-1513407030348-c983a97b98d8?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></Card>
+      <Card  title="New York" imgURL="https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></Card>
+      <Card  title="Rome" imgURL="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></Card>
+      <Card  title="Paris" imgURL="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"></Card>
+    </div>
+
+
+    /COMPONENTE/
+    function Card(props){
+
+const title=props.title;
+const description="Lorem ipsum dolor, sit amet consectetur adipisicing elit.";
+const imgURL=props.imgURL;
+
+
+    return(
+        <div>
+            <img src={imgURL} alt="" />
+            <div>
+                <h2>{title}</h2>
+                <p>{description}</p>
+            </div>
+        </div>
+    )
+}
+
+export default Card;
+
+//SEMPLIFICAZIONE// BEST PRACTICE
+si può ulteriormente semplificare:
+
+function Card({title, imgURL}){
+
+
+const description="Lorem ipsum dolor, sit amet consectetur adipisicing elit.";
+
+    return(
+        <div>
+            <img src={imgURL} alt="" />
+            <div>
+                <h2>{title}</h2>
+                <p>{description}</p>
+            </div>
+        </div>
+    )
+}
+
+export default Card;
+
+Nel caso abbiamo altri componenti figli dentro per esempio <Card></Card> ricordarsi di aggiungere il "children" insieme ai prop+ nel return del componente.
+
+//////// RENDERING CONDIZIONALE
+esempio
+HTML
+<Card isVisited={true} title="Tokyo"></Card>
+
+COMPONENTE:
+cosi non renderizziamo i componenti dove isVisited è false.
+
+    function Card({title, imgURL, isVisited, children}){
+        if (isVisited){
+            return null;
+        }
+    }
+oppure renderizzandoli tutti con i relativi isVisited utilizzando operatore ternario :
+
+    {isVisited?<span>V Visitata</span> : <span>X non visitata</span>}
+
+cosi stesso risultato, metodo leggermente diverso:
+    <span>{isVisited ? "V visitata" : "X non visitata"}</span>
+
+sempre stesso risultato, utilizzando una variabile:
+
+    const visitedLabel = isVisited ? "V visitata" : "X non visitata";
+
+    <span>{visitedLabel}</span>
+
+stesso risultato ma con operatore And && ( va letto come " condizione vera? allora fai questo ")
+
+    {isVisited && <span>V visitata</span>}
+    {!isVisited && <span>X non visitata</span>}
+
+
+//////////RENDERING DI LISTE
+premettendo di prelevare i dati da un array o per esempio un Json, possiamo generare tante card senza scrivere tutte le card usando map iterando sull'array:
+
+    const cities=[
+        {
+            id:0,
+            name:"Tokyo",
+            description:"Lorem ipsum ecc",
+            imgURL:""https://images.unsplash.com/photo-151",
+            isVisited:"true",
+        },
+        {ecc ecc}
+    ]
+
+    {cities.map((city)=>(
+    <Card
+        key={city.id}
+        title={city.name}
+        isVisited={city.isVisited}
+        imgURL={city.imgURL}>
+        {city.description}
+    </Card>
+
+    ))}
+
+l'id è fondamentale perchè identifica l'elemento, come props si chiama KEY
+
+si possono filtrare i risultati, per esempio far apparire solo le città visitate:
+
+    {cities
+    .filter((city)=>city.isVisited)
+    .map((city)=>(
+        <Card
+            key={city.id}
+            title={city.name}
+            isVisited={city.isVisited}
+            imgURL={city.imgURL}>
+            {city.description}
+        </Card>
+
+        ))}
+
+//////////GESTIONE EVENTI
+compare finestra di alert
+
+    <button onClick={() => alert("ciao")}>alert</button> genera finestra alert al click
+
+    oppure senza arrow function :
+
+    function handleClick(){
+    alert("ciao")
+    }
+
+    <button onClick={handleClick}>alert</button>
+
+trasmettere input alla digitazione
+
+    function handleChange(e){
+    console.log(e.target.value);
+    }
+
+    <input type='text' onChange={handleChange} />
+
+form senza aggiornare la pagina col prevent default
+
+    function handleSubmit(e){
+    e.preventDefault();
+    console.log(e);
+    }
+
+    <form onSubmit={handleSubmit}>
+        <button type='submit'>invia</button>
+    </form>
+
+/////// GESTIONE DELLO STATO
+
+    hook sono dei "ganci" o "ami" per agganciarci ad altre funzionalità di react.
+    es. import { useState } from "react". "useState" è un hook
+
+        const [items, setItems] = useState(1,2,3); //items nome array, setItems è la funzione.
+
+        const aggiugniItem= ()=>{
+            const nuovoItem=4;
+            setItems([...setItems, nuovoItem]) //attenzione senza "..." sarebbe stato sovrascritto il valore (1,2,3)
+        }
+    
+    "..." = spread operator serve ad unire un nuovo valore all'interno dell'array senza sostituirlo
+
+        const [user, setUser] = useState({name:"Alice", age:30});
+
+        const updateUserName=()=>{
+        const updateUser = {...user, name:"Bob"};
+        setUser(updateUser);
+        }
+
+        in questo caso il nome viene sovrascritto e non aggiunto
+
+//////////CHILD-PARENT
+
+L'array con i dati (cities) deve avere uno stato (useState) es:
+
+    const [cities, setCities] = useState ([
+    {
+        id:0,
+        name:"Tokyo",
+        description:"lorem ipsum",
+        isVisited:true,
+    },
+
+    ])
+
+creazione della funzione che ci permette di prendere lo stato precedente ed aggiungere una nuova città:
+
+    const addCity = (city) => {
+        setCities([...cities, city]);
+    };
+
+nel componente creato (es CardForm) passiamo la funzione come prop:
+
+    <CardForm addCity={addCity}></CardForm>
+
+preleviamo i nuovi dati da passare es:
+
+    const handleClick=()=> {
+
+        const city={
+            id:4,
+            name:"Sydney",
+            description:"Lorem ipsum",
+            isVisited:false,
+        }
+        addCity(city); // chiamiamo la funzione per arcodare la nuova città/card
+    }
+
+e nel button di un ipotetico form :
+
+    <button onClick={handleClick}>Aggiungi Card</button>
+
+///////////////GESTIONE FORM
+
+es.
+    <form onSubmit={handleSubmit}>
+        <div>
+            <label>Nome Città</label>
+            <input type="text" name="name"></input>
+        </div>
+        <div>
+            <label>Descrizione</label>
+            <input type="text" name="description"></input>
+        </div>
+        <div>
+            <label>Immagine</label>
+            <input type="text" name="imgUrl"></input>
+        </div>
+        <div>
+            <label>Visitata?</label>
+            <input type="checkbox" name="isVisited"></input>
+        </div>
+
+        <button type="submit">Aggiungi Card</button>
+    </form>
+
+importare useState per il form per dare uno stato al nostro form:
+
+    import {useState} from "react";
+
+    const[formData, setFormData]= useState({
+        name:"",
+        description:"",
+        imgUrl:"",
+        isVisited:false,
+    })
+
+poi dobbiamo gestire i valori inseriti negli input:
+
+    const handleInputChange = (e)=>{
+        const {name, value, type, checked} = e.target
+        const inputValue = type == "checkbox" ? checked : value
+        setFormData{
+            ...formData,
+            [name]: inputValue,
+        }
+    }
+
+
+    <form onSubmit={handleSubmit}>
+        <div>
+            <label>Nome Città</label>
+            <input type="text" name="name" value={formData.name} onChange={handleInputChange}></input>
+        </div>
+        <div>
+            <label>Descrizione</label>
+            <input type="text" name="description" value={formData.description} onChange={handleInputChange}></input>
+        </div>
+        <div>
+            <label>Immagine</label>
+            <input type="text" name="imgUrl" value={formData.imgURL} onChange={handleInputChange}></input>
+        </div>
+        <div>
+            <label>Visitata?</label>
+            <input type="checkbox" name="isVisited" checked={formData.isVisited} onChange={handleInputChange}></input>
+        </div>
+
+        <button type="submit">Aggiungi Card</button>
+    </form>
+
+prelevamento dati
+
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+        const city = {
+            id:math.random(),
+            name:formData.name,
+            description:formData.description,
+            imgUrl:formData.imgURL,
+            isVisited:false,
+        }
+    }
