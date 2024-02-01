@@ -17,8 +17,10 @@ h1{text-align: center;}
   display: flex;
   justify-content: center;
   gap: 2em;
-  margin-bottom: 5%;
+  margin: 5% auto;
 }
+
+
 
 .box-uno input{
   border: solid blue 2px;
@@ -38,7 +40,7 @@ h1{text-align: center;}
 }
 
 .box-due{
-  width: 80%;
+  width: 60%;
   margin:0 auto;
   font-size:2em;
   text-align: center;
@@ -50,6 +52,8 @@ h1{text-align: center;}
 .box-due ul{
   list-style:none;
   text-align: left;
-  width:40%;
+  width:100%;
 }
+
+
 

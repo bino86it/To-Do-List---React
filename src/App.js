@@ -29,9 +29,10 @@ const handleAddTask =()=>{//se il valore dell'input non è vuoto, aggiungo all'a
     <div className="App">
       <h1>To Do List</h1>
       <div className='box-uno'>
-        <input onChange={handleChange} type='text' placeholder='your task' value={task}></input>
-        <button onClick={handleAddTask}>Add Task</button>
-      </div>
+          <input onChange={handleChange} type='text' placeholder='your task' value={task}></input>
+          <button onClick={handleAddTask}>Add Task</button>
+        </div>
+      
       <div className='box-due'>
         <ToDoList tasks={tasks}></ToDoList>
       </div>
