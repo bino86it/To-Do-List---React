@@ -17,6 +17,7 @@ h1{text-align: center;}
   display: flex;
   justify-content: center;
   gap: 2em;
+  margin-bottom: 5%;
 }
 
 .box-uno input{
